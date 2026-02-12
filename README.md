@@ -5,6 +5,7 @@
 [1. 렌더링 파이프라인](#1-렌더링-파이프라인)</br>
 [2. 사전 준비](#2-사전-준비)</br>
 [3. 아웃라인 쉐이더](#3-아웃라인-쉐이더)</br>
+[4. 노멀과 라이트의 내적](#4-노멀과-라이트의-내적)</br>
 
 
 ## 1. 렌더링 파이프라인
@@ -46,6 +47,55 @@ vertex shader에서 변환된 2D좌표를 화면에 표시될 픽셀로 변환�
 ![2.png](/Images/2.png)
 [이런 느낌이다.]
 
-따라서 캐릭터의 표면(노말)을 기준으로
+이를 해결할 방법중 하나로 캐릭터의 표면(노말)을 기준으로 확장하고 Back face로 렌더링하는 방법이 있다.
+![3.png](/Images/3.png)
 
+하지만 이 방법은 날카로운 엣지에서는 다음과 같은 문제가 생긴다.
+![4.png](/Images/4.png)
+[유니티 로고 같이 생겼다]
+
+노말 방향으로만 확장하기 때문에 엣지부분이 "아웃라인"처럼 보이지 않게 된다.
+
+이것을 해결하는 방법으로는 SmoothNormal을 만들어주는 방법이 있다.
+
+하드엣지로 분리된 버텍스들의 노멀을 평균을 내서 부드러운 노멀을 만들 수 있다.
+만들어진 노멀은 탄젠트 채널에 저장해두고 아웃라인 쉐이더에서 사용할 수 있다.
+
+탄젠트 채널은 노말맵을 사용할때 필요하므로 만약 노말맵이 필요한 매쉬라면 다른 UV채널을 사용해야만 한다.
+
+```C#
+    public Mesh mesh;
+    void smoothNormals()
+    {
+        // 같은 위치의 정점들을 그룹핑
+        var smoothNormals = new Dictionary<Vector3, Vector3>();
+        
+        for (int i = 0; i < mesh.vertexCount; i++)
+        {
+            var pos = mesh.vertices[i];
+            if (!smoothNormals.ContainsKey(pos))
+                smoothNormals[pos] = Vector3.zero;
+            smoothNormals[pos] += mesh.normals[i]; // 노말 누적
+        }
+        
+        // 평균 내서 탄젠트 채널에 저장
+        var tangents = new Vector4[mesh.vertexCount];
+        for (int i = 0; i < mesh.vertexCount; i++)
+        {
+            var avg = smoothNormals[mesh.vertices[i]].normalized;
+            tangents[i] = new Vector4(avg.x, avg.y, avg.z, 0);
+        }
+        mesh.tangents = tangents;
+    }
+```
+이 코드는 임포트시에 사용하면 될 것으로 추측된다.(이 문장은 이후의 실험 후에 수정하겠음)
+
+![5.png](/Images/5.png)
+
+계산된 Smooth Normal을 기존의 Normal과 대체하면 
+
+![6.png](/Images/6.png)
+이런 깔끔한 아웃라인을 만들 수 있다!
+
+## 4. 노멀과 라이트의 내적
 <작성중>
