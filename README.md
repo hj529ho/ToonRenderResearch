@@ -101,7 +101,7 @@ vertex shader에서 변환된 2D좌표를 화면에 표시될 픽셀로 변환�
 
 계산된 Smooth Normal을 기존의 Normal과 대체하면 
 
-![6.png](/Images/6.png)
+![6.png](/Images/6.png)</br>
 하드엣지에서 갈라지지 않는 깔끔한 아웃라인을 얻을 수 있다.
 
 ## 4. 노멀과 라이트의 내적
@@ -165,9 +165,9 @@ B의 길이를 곱한 값이다.
 
 
 ## 8. 중색 배색
-![12.png](/Images/12.png)
+![12.png](/Images/12.png)</br>
 특정한 구간을 정해서 SmoothStep을 통해 그라데이션을 만들면 중색 배색도 가능하다.
-![13.png](/Images/13.png)
+![13.png](/Images/13.png)</br>
 쉐도우 컬러와 베이스컬러를 그라데이션
 
 
