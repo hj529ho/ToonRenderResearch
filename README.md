@@ -165,14 +165,18 @@ B의 길이를 곱한 값이다.
 ![11.png](/Images/11.png)
 
 
-## 8. 중색 배색
+## 8. 중톤 배색
 ![12.png](/Images/12.png)</br>
 
-특정한 구간을 정해서 SmoothStep을 통해 그라데이션을 만들면 중색 배색도 가능하다.</br>
+특정한 구간을 정해서 SmoothStep을 통해 그라데이션을 만들면 중톤 배색도 가능하다.</br>
 
 ![13.png](/Images/13.png)</br>
 > 쉐도우 컬러와 베이스컬러를 그라데이션한 결과
 
+
+//TODO 매트캡 텍스쳐와 적용 방법에 대한 내용
+//TODO 참고 자료 : https://docs.unity3d.com/Packages/com.unity.toonshader@0.7/manual/MatCap.html
+//TODO 중톤에 대한 내용 조사 필요.
 
 ## EX-1 SDF 쉐이더
 <추가중>
